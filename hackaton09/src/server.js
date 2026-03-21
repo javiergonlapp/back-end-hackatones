@@ -3,6 +3,8 @@ const express = require("express");
 const sequelize = require("./db");
 
 const usersRouter = require("./routes/users.routes");
+const coursesRouter = require("./routes/courses.routes");
+
 const { errorHandler } = require("./middlewares/errorHandler");
 
 const app = express();
@@ -20,6 +22,7 @@ app.get("/", (_req, res) => {
 
 // ROUTES
 app.use("/api/users", usersRouter);
+app.use("/api/courses", coursesRouter);
 
 // MANEJO GLOBAL DE ERRORES
 app.use(errorHandler);
