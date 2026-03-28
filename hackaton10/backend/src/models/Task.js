@@ -30,6 +30,11 @@ Task.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    isCompleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    }
   },
   {
     sequelize,

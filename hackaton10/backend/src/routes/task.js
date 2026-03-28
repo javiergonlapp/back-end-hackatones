@@ -1,9 +1,10 @@
 const { Router } = require("express");
-const { createTask } = require("../controllers/task.controller");
+const { createTask, listTaskByUser } = require("../controllers/task.controller");
 const authMiddleware = require("../middlewares/auth");
 
 const router = Router();
 
+router.get("/", authMiddleware, listTaskByUser);
 router.post("/", authMiddleware, createTask);
 // router.post('/', createTask);
 // listTaskByUser {

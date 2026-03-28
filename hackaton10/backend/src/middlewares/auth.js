@@ -2,6 +2,7 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const { appError } = require("./errorHandler");
+const { tokenBlackList } = require("../controllers/auth.controller");
 
 const authMiddleware = async (req, res, next) => {
   try {
@@ -17,6 +18,10 @@ const authMiddleware = async (req, res, next) => {
       return next(
         appError(401, "NO_TOKEN", "No autorizado. Token no proporcionado."),
       );
+    }
+
+    if(tokenBlackList.has(token)) {
+      return next(appError(401, "TOKEN_REVOKED", "token revocado"))
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

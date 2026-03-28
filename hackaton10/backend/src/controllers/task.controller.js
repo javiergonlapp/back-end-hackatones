@@ -1,9 +1,9 @@
 const { Task } = require("../models");
+const { getPagination, paginatedResponse } = require("../utils/pagination");
 
 const createTask = async (req, res, next) => {
   try {
     const { title, description, deadline } = req.body;
-    // req.usuario = usuario;
     console.log("req.usuario:", req.usuario.id);
 
     const task = await Task.create({
@@ -13,11 +13,36 @@ const createTask = async (req, res, next) => {
       userId: req.usuario.id,
     });
 
-    // const created = await Task.findByPk(user.id);
     return res.status(201).json({ status: "ok", data: task });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { createTask };
+const listTaskByUser = async (req, res, next) => {
+  try {
+    const { page, pageSize, limit, offset } = getPagination(req.query);
+    const { status } = req.query;
+
+    const where = { userId: req.usuario.id };
+
+    if (status !== undefined) {
+      where.isCompleted = status;
+    }
+
+    const result = await Task.findAndCountAll({
+      where,
+      limit,
+      offset,
+      order: [["createdAt", "DESC"]],
+    });
+    return res.status(200).json({
+      status: "ok",
+      ...paginatedResponse(result, page, pageSize),
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { createTask, listTaskByUser };
