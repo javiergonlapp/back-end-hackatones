@@ -34,26 +34,47 @@ const authLogin = async (req, res, next) => {
 
 const authLogout = (req, res, next) => {
   try {
-
     const token = req.headers.authorization?.split(" ")[1];
 
-    if(token) {
+    if (token) {
       tokenBlackList.add(token);
     }
 
     res.cookie("token", "", {
       httpOnly: true,
       expires: new Date(0),
-      path: '/'
-    })
+      path: "/",
+    });
 
     return res.status(200).json({
       success: true,
-      message: "Session cerrada correctamente"
-    })
+      message: "Session cerrada correctamente",
+    });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { authLogin, authLogout, tokenBlackList };
+const updatePassword = async (req, res, next) => {
+  try {
+    const { password, newPassword } = req.body;
+
+    const usuario = await User.scope("withPassword").findByPk(req.usuario.id);
+
+    if (password !== usuario.passwordHash) {
+      return next(
+        appError(400, "INVALID_CREDENTIALS", "Las contrasenas no coninciden"),
+      );
+    }
+
+    usuario.passwordHash = newPassword;
+
+    usuario.save();
+
+    return res.status(200).json({ status: "ok", data: "Se cambiaron las contrasenas correctamente" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { authLogin, authLogout, updatePassword, tokenBlackList };

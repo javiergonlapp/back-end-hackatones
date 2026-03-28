@@ -20,7 +20,11 @@ const createUser = async (req, res, next) => {
 };
 
 const updateUser = (req, res) => {
-  return res.send("Update User");
+  try {
+    const { firstName, lastName, email, password } = req.body;
+  } catch (error) {
+    next(error);
+  }
 };
 
 const deleteUser = (req, res) => {
