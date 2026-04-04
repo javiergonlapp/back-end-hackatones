@@ -75,11 +75,10 @@ const insumoSchema = new mongoose.Schema(
 );
 
 // Middleware pre-save: calcular cantidad recibida según ratio 1:0.25
-insumoSchema.pre("save", function (next) {
+insumoSchema.pre("save", function () {
   if (this.isModified("cantidadComprada")) {
     this.cantidadRecibida = this.cantidadComprada * this.ratioConversion;
   }
-  next();
 });
 
 // Virtual: costo total

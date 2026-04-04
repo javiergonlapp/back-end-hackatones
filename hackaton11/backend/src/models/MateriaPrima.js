@@ -19,8 +19,8 @@ const materiaPrimaSchema = new mongoose.Schema(
     },
     unidadMedida: {
       type: String,
-      enum: ["tablón", "plancha", "lámina", "metro"],
-      default: "tablón",
+      enum: ["tablon", "plancha", "lamina", "metro"],
+      default: "tablon",
     },
     cantidadComprada: {
       type: Number,
@@ -62,11 +62,10 @@ const materiaPrimaSchema = new mongoose.Schema(
 );
 
 // Middleware pre-save: calcular cantidad recibida según ratio 3:1
-materiaPrimaSchema.pre("save", function (next) {
+materiaPrimaSchema.pre("save", function () {
   if (this.isModified("cantidadComprada")) {
     this.cantidadRecibida = this.cantidadComprada * this.ratioConversion;
   }
-  next();
 });
 
 // Virtual: costo total
