@@ -13,7 +13,7 @@ import { generateToken } from "../utils/jwt.handle.ts";
 // const { passEncrypt, comparePass } = require("../utils/encriptar");
 // const { generateToken } = require("../utils/jwt.handle");
 
-const tokenBlackList = new Set();
+export const tokenBlackList = new Set();
 
 export const authLogin = async (
   req: Request,
