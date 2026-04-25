@@ -31,6 +31,10 @@ const userSchema = new Schema<IUser>({
     require: false,
     default: null,
   },
+  isOnline: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default model<IUser>("User", userSchema);

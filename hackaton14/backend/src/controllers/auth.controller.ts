@@ -46,7 +46,7 @@ export const authLogin = async (
 
     const token = generateToken(userFind._id.toString());
     // // const created = await User.findByPk(user.id);
-    return res.status(201).json({ status: "ok", data: token });
+    return res.status(200).json({ status: "ok", data: token });
     // return res.send("USUARIO CORRECTO");
   } catch (error) {
     next(error);
@@ -116,7 +116,6 @@ export const uploadAvatar = async (
   next: NextFunction,
 ) => {
   try {
-
     if (!req.file) {
       return next(appError(400, "FILE_REQUIRED", "Se requiere una imagen."));
     }
@@ -146,6 +145,22 @@ export const uploadAvatar = async (
         url: avatarUrl,
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const aboutMe = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const userFind = await User.findById(req.userId);
+
+    if (!userFind) {
+      return next(
+        appError(400, "USER_NOT_FOUND", "El usuario no ah sido encontrado"),
+      );
+    }
+
+    return res.status(200).json(userFind);
   } catch (error) {
     next(error);
   }

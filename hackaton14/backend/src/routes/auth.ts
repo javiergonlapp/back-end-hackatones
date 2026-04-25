@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  aboutMe,
   authLogin,
   authLogout,
   createAccount,
@@ -13,6 +14,7 @@ const router = Router();
 router.post("/login", authLogin);
 router.post("/sign-in", createAccount);
 router.post("/logout", authLogout);
+router.get("/me", authMiddleware, aboutMe);
 router.post(
   "/avatar",
   authMiddleware,

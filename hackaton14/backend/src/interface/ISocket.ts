@@ -5,17 +5,18 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  sendMessage: (text: string) => void;
-  setUsername: (username: string) => void;
+  sendMessage: (to: any, text: any) => void;
+  setUser: (user: string) => void;
 }
 
 export interface SocketData {
-  username: string;
+  userId: string;
 }
 
 export interface ChatMessage {
   id: string;
-  user: string;
+  from: string; // Remitente
+  to: string; // Destinatario
   text: string;
   timestamp: number;
 }
